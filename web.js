@@ -12,11 +12,12 @@ var updates;
  * GET request.
  */
 app.get('/', function(request, response) {
+	// Split request URL into parts.
 	var url_parts = url.parse(request.url, true);
 	var query = url_parts.query;
-	
 	var action = query['a'];
 
+	// Check how to handle request depending on action.
 	if (action == undefined) {
 		servePage(request, response);
 	} else if (action == 'addtama') {
