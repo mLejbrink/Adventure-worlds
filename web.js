@@ -62,7 +62,7 @@ app.listen(port, function() {
  * Update world.
  */
 function updateWorld() {
-	console.log("tick");
+	//console.log("tick");
 }
 
 /**
