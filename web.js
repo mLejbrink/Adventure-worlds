@@ -10,7 +10,7 @@ var stateNr;
  * GET request.
  */
 app.get('/', function(request, response) {
-	if (request.url == '/updateworld') {
+	if (request.url == '/?a=updateworld') {
 		stateNr++;
 		response.end('' + request.url + ' Statenr: ' + stateNr);
 	} else {
