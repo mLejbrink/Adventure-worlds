@@ -14,7 +14,7 @@
 			$('#add_tama_b').click(function() {
 				var new_name = $('#tama_name').val();
 				$.get('/?a=addtama&new_name=' + new_name, function(data) {
-					// alert('New tama: ' + new_name);
+					$('#tama_name').val('');
 				});
 			});
 		</script>

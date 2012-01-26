@@ -23,6 +23,7 @@ app.get('/', function(request, response) {
 	} else if (action == 'addtama') {
 		var new_name = query['new_name'];
 		console.log('addtama sent, the name is: ' + new_name);
+		response.end();
 	} else if (action == 'updateworld') {
 		response.end('' + request.url);
 	} else {
