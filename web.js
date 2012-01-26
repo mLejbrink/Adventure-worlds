@@ -4,17 +4,17 @@ var fs = require('fs');
 
 var app = express.createServer(express.logger());
 
-var stateNr = 1;
+var stateNr;
 
 /**
  * GET request.
  */
 app.get('/', function(request, response) {
-	if (request.url == '/') {
-		servePage(request, response);
-	} else {
+	if (request.url == '/updateworld') {
 		stateNr++;
 		response.end('' + request.url + ' Statenr: ' + stateNr);
+	} else {
+		servePage(request, response);
 	}
 });
 
@@ -50,8 +50,20 @@ function servePage(request, response) {
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
 	console.log("Listening on " + port);
-	setInterval(function(){console.log("tick")}, 5000);
+	
+	// Initial state.
+	stateNr = 1;
+	
+	// Update world within interval.
+	setInterval(function(){updateWorld();}, 100);
 });
+
+/**
+ * Update world.
+ */
+function updateWorld() {
+	console.log("tick");
+}
 
 /**
  * Returns a random integer between min and max
