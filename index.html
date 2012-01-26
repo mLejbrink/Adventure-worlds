@@ -1,17 +1,22 @@
 ﻿<html>
 	<head>
 		<title>Adventure Worlds</title>
-		<script type="text/javascript">
-			$('#add_tama_b').click(function() {
-				alert('User adds tama);
-			});
-		</script>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
 	</head>
 	<body>
 		<h2>Adventure worlds</h2>
 		<textarea rows="10" cols="50" readonly="readonly"></textarea>
-		<p>Drop somebody in the world and wait to see what happens.</p>
+		<p>Drop your tama in the world and wait to see what happens.</p>
 		<input id="tama_name" type="text" maxlength="20" placeholder="Name of your tama" />
 		<button id="add_tama_b" type="button">Add tama</button>
+		
+		<script type="text/javascript">
+			$('#add_tama_b').click(function() {
+				var new_name = $('#tama_name').val();
+				$.get('/?a=addtama&new_name=' + new_name, function(data) {
+					// alert('New tama: ' + new_name);
+				});
+			});
+		</script>
 	</body>
 </html>

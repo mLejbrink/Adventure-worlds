@@ -21,7 +21,8 @@ app.get('/', function(request, response) {
 	if (action == undefined) {
 		servePage(request, response);
 	} else if (action == 'addtama') {
-		response.end('addtama sent');
+		var new_name = query['new_name'];
+		console.log('addtama sent, the name is: ' + new_name);
 	} else if (action == 'updateworld') {
 		response.end('' + request.url);
 	} else {
