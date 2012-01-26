@@ -14,11 +14,14 @@ var updates;
 app.get('/', function(request, response) {
 	var url_parts = url.parse(request.url, true);
 	var query = url_parts.query;
+	
+	var action = request.url;
 
-	if (request.url == '/?a=addtama') {
-		console.log(query['a'] + ', ' + query['apa'] + '.');
-		response.end('See console for param a');
-	} else if (request.url == '/?a=updateworld') {
+	if (action == undefined) {
+		servePage(request, response);
+	} else if (action == 'addtama') {
+		response.end('addtama sent');
+	} else if (action == 'updateworld') {
 		response.end('' + request.url);
 	} else {
 		servePage(request, response);
