@@ -16,7 +16,7 @@ app.get('/', function(request, response) {
 	var query = url_parts.query;
 
 	if (request.url == '/?a=addtama') {
-		response.end(query);
+		console.log(query);
 	} else if (request.url == '/?a=updateworld') {
 		response.end('' + request.url);
 	} else {
