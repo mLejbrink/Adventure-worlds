@@ -5,8 +5,11 @@ var fs = require('fs');
 var app = express.createServer(express.logger());
 
 app.get('/', function(request, response) {
-	response.end('' + request.url);
-    //servePage(request, response);
+	if (request.url == '/') {
+		servePage(request, response);
+	} else {
+		response.end('' + request.url);
+	}
 });
 
 function servePage(request, response) {
