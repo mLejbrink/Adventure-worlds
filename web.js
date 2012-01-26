@@ -6,6 +6,9 @@ var app = express.createServer(express.logger());
 
 var stateNr = 1;
 
+/**
+ * GET request.
+ */
 app.get('/', function(request, response) {
 	if (request.url == '/') {
 		servePage(request, response);
