@@ -15,7 +15,7 @@ app.get('/', function(request, response) {
 	var url_parts = url.parse(request.url, true);
 	var query = url_parts.query;
 	
-	var action = request.url;
+	var action = query['a'];
 
 	if (action == undefined) {
 		servePage(request, response);
