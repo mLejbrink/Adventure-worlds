@@ -5,7 +5,12 @@ var fs = require('fs');
 var app = express.createServer(express.logger());
 
 app.get('/', function(request, response) {
-    var filePath = '.' + request.url;
+	response.end('' + request.url);
+    //servePage(request, response);
+});
+
+function servePage(request, response) {
+	var filePath = '.' + request.url;
     if (filePath == './')
         filePath = './index.html';
 
@@ -28,9 +33,7 @@ app.get('/', function(request, response) {
 		    response.end();
 	    }
     });
-	
-    //response.send('Hello World!');
-});
+}
 
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
