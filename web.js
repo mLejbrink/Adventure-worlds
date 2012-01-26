@@ -16,7 +16,7 @@ app.get('/', function(request, response) {
 	var query = url_parts.query;
 
 	if (request.url == '/?a=addtama') {
-		console.log(query['a']);
+		console.log(query['a'] + ', ' + query['apa'] + '.');
 		response.end('See console for param a');
 	} else if (request.url == '/?a=updateworld') {
 		response.end('' + request.url);
