@@ -4,14 +4,20 @@ var fs = require('fs');
 
 var app = express.createServer(express.logger());
 
+var stateNr = 1;
+
 app.get('/', function(request, response) {
 	if (request.url == '/') {
 		servePage(request, response);
 	} else {
-		response.end('' + request.url);
+		stateNr++;
+		response.end('' + request.url + ' Statenr: ' + stateNr);
 	}
 });
 
+/**
+ * Serve "first page" to user.
+ */
 function servePage(request, response) {
 	var filePath = '.' + request.url;
     if (filePath == './')
