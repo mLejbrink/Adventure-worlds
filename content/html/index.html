@@ -1,0 +1,45 @@
+﻿<html>
+	<head>
+		<title>Adventure Worlds</title>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+	</head>
+	<body>
+		<h2>Adventure worlds</h2>
+		<textarea id="world_events" rows="10" cols="50" readonly="readonly"></textarea>
+		<p>Drop your tama in the world and wait to see what happens.</p>
+		<input id="tama_name" type="text" maxlength="20" placeholder="Name of your tama" />
+		<button id="add_tama_b" type="button">Add tama</button>
+		<h3>Tamas</h3>
+		<ul id="tama_list">
+		</ul>
+		
+		<script type="text/javascript">
+			// Add tama.
+			$('#add_tama_b').click(function() {
+				var new_name = $('#tama_name').val();
+				$.get('/?a=addtama&new_name=' + new_name, function(data) {
+					$('#tama_name').val('');
+				});
+			});
+		</script>
+		
+		<script>
+			// Update world.
+			$(document).ready(function() {
+				(function poll() {
+					var nr_of_tamas = $('#tama_list').children('li').size();
+					$.ajax({ 
+						url: '/',
+						data: 'a=updateclient&nr_of_tamas=' + nr_of_tamas,
+						success: function(data) {
+							if (!jQuery.isEmptyObject(data))
+								$('#tama_list').append('<li>' + data.new_tamas[0].name + '</li>');
+						}, 
+						dataType: 'json', 
+						complete: poll, 
+						timeout: 30000 });
+				})();
+			});
+		</script>
+	</body>
+</html>
