@@ -6,7 +6,8 @@
 	<body>
 		<h2>Adventure worlds</h2>
 		<textarea id="world_events" rows="10" cols="50" readonly="readonly"></textarea>
-		<p>Drop your tama in the world and wait to see what happens.</p>
+		<div><input type="checkbox" id="updates_checkbox" value="pause_updates" />Pause updates</div>
+		<p>Drop your tama in the world and wait to see ze will do.</p>
 		<input id="tama_name" type="text" maxlength="20" placeholder="Name of your tama" />
 		<button id="add_tama_b" type="button">Add tama</button>
 		<h3>Tamas</h3>
@@ -34,7 +35,7 @@
 						url: '/srv/',
 						data: 'a=updateclient' + '&' + 'nr_of_tamas=' + nr_of_tamas + '&' + 'last_update=' + last_update,
 						success: function(data) {
-							if (!jQuery.isEmptyObject(data)) {
+							if (!jQuery.isEmptyObject(data) && !$('#updates_checkbox').is(':checked')) {
 								if (!jQuery.isEmptyObject(data.new_tamas)) {
 									for (i = 0; i < data.new_tamas.length; i++) {
 										$('#tama_list').append('<li>' + data.new_tamas[i].name + '</li>');
@@ -42,7 +43,7 @@
 								}
 								if (!jQuery.isEmptyObject(data.new_updates)) {
 									for (j = 0; j < data.new_updates.length; j++) {
-										$('#world_events').val($('#world_events').val() + data.new_updates[j].text + '\n');
+										$('#world_events').val(data.new_updates[j].text + '\n' + $('#world_events').val());
 										last_update++;
 									}
 								}
