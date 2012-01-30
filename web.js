@@ -78,7 +78,7 @@ function updateClient(query, response) {
 function updateWorld() {
 	// Do simple things once in a while.
 	for (i = 0; i < tamas.length; i++) {
-		if (getRandomInt(1, 50) == 1) {
+		if (getRandomInt(1, 200) == 1) {
 			if (tamas.length == 1) {
 				// Only a single tama in world.
 				updates.push(tamas[0] + ' is forever alone.');
