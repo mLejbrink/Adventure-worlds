@@ -17,23 +17,36 @@
 			// Add tama.
 			$('#add_tama_b').click(function() {
 				var new_name = $('#tama_name').val();
-				$.get('/?a=addtama&new_name=' + new_name, function(data) {
+				$.get('/srv/?a=addtama&new_name=' + new_name, function(data) {
 					$('#tama_name').val('');
 				});
 			});
 		</script>
 		
 		<script>
+			var last_update = 0;
+			
 			// Update world.
 			$(document).ready(function() {
 				(function poll() {
 					var nr_of_tamas = $('#tama_list').children('li').size();
 					$.ajax({ 
-						url: '/',
-						data: 'a=updateclient&nr_of_tamas=' + nr_of_tamas,
+						url: '/srv/',
+						data: 'a=updateclient' + '&' + 'nr_of_tamas=' + nr_of_tamas + '&' + 'last_update=' + last_update,
 						success: function(data) {
-							if (!jQuery.isEmptyObject(data))
-								$('#tama_list').append('<li>' + data.new_tamas[0].name + '</li>');
+							if (!jQuery.isEmptyObject(data)) {
+								if (!jQuery.isEmptyObject(data.new_tamas)) {
+									for (i = 0; i < data.new_tamas.length; i++) {
+										$('#tama_list').append('<li>' + data.new_tamas[i].name + '</li>');
+									}
+								}
+								if (!jQuery.isEmptyObject(data.new_updates)) {
+									for (j = 0; j < data.new_updates.length; j++) {
+										$('#world_events').val($('#world_events').val() + data.new_updates[j].text + '\n');
+										last_update++;
+									}
+								}
+							}
 						}, 
 						dataType: 'json', 
 						complete: poll, 

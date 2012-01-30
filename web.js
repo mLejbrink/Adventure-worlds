@@ -12,56 +12,61 @@ var updates;
  * GET request.
  */
 app.get('/', function(request, response) {
-	// Split request URL into parts.
+	servePage(request, response);
+});
+
+/**
+ * GET request.
+ */
+app.get('/srv/', function(request, response) {
 	var url_parts = url.parse(request.url, true);
 	var query = url_parts.query;
 	var action = query['a'];
 
-	// Check how to handle request depending on action.
-	if (action == undefined) {
-		servePage(request, response);
-	} else if (action == 'addtama') {
-		addTama(query);
-		response.end();
+	if (action == 'addtama') {
+		addTama(query, response);
 	} else if (action == 'updateclient') {
 		updateClient(query, response);
-	} else {
-		servePage(request, response);
 	}
 });
 
 /**
  * New tama dropped in world.
  */
-function addTama(query) {
+function addTama(query, response) {
 	var new_name = query['new_name'];
 	if (new_name == '')
 		new_name = 'Unknown tama';
 		
 	tamas.push(new_name);
-	updates.push(new_name + ' dropped in world');
-		
-	console.log('addtama sent, the name is: ' + new_name);
+	updates.push(new_name + ' dropped in world.');
+	
+	response.end();
 }
 
 /**
- * Update world.
+ * Update client browser with what has happened.
  */
 function updateClient(query, response) {
+	var last_update = parseInt(query['last_update']);
+	var u_diff = updates.length - last_update;
+	
 	var nr_of_tamas = parseInt(query['nr_of_tamas']);
-	var diff = tamas.length - nr_of_tamas;
+	var t_diff = tamas.length - nr_of_tamas;
 	
-	//console.log('current nr of tamas: ' + tamas.length);
-	//console.log('page nr of tamas: ' + nr_of_tamas);
-	//console.log('diff: ' + diff);
-	
-	// Respond to client with any new tamas.
+	// Respond to client with any new tamas and world updates.
 	var jsonObj = {};
-	if (diff > 0) {
-		jsonObj = {'new_tamas': []};
-		for (i = 0; i < diff; i++) {
-			console.log(tamas[nr_of_tamas + i]);
-			jsonObj.new_tamas.push({name: tamas[nr_of_tamas + i]});
+	if (t_diff > 0  || u_diff > 0) {
+		jsonObj = {'new_tamas': [], 'new_updates': [], 'update_nr': updates.length};
+		
+		for (i = 0; i < t_diff; i++) {
+			var new_name = tamas[nr_of_tamas + i];
+			jsonObj.new_tamas.push({name: new_name});
+		}
+		
+		for (j = 0; j < u_diff; j++) {
+			var new_update = updates[last_update + j];
+			jsonObj.new_updates.push({text: new_update});
 		}
 	}
 	response.end(JSON.stringify(jsonObj));
@@ -71,7 +76,16 @@ function updateClient(query, response) {
  * Update world.
  */
 function updateWorld() {
-	// do update of world
+	// Do simple things once in a while.
+	for (i = 0; i < tamas.length; i++) {
+		if (getRandomInt(1, 100) == 1) {
+			if (tamas.length == 1) {
+				updates.push(tamas[0] + ' is forever alone.');
+			} else {
+				updates.push(tamas[i] + ' yawns out of pure boredom.');
+			}
+		}
+	}
 }
 
 /**
@@ -107,7 +121,7 @@ app.listen(port, function() {
 	// Initial state.
 	tamas = new Array();
 	updates = new Array();
-	updates.push('The world is empty.');
+	updates.push('This world is empty.');
 	
 	// Update world within interval.
 	setInterval(function(){updateWorld();}, 100);
